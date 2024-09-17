@@ -1,2 +1,2 @@
-# docker_stats_exporter
-Docker Stats exporter for Prometheus
+# Docker Stats exporter for Prometheus
+
