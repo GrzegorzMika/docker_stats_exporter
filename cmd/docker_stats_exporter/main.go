@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 	"net/http"
@@ -15,6 +16,9 @@ import (
 )
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	var (
 		listenAddress = flag.String("web.listen-address", ":9273", "Address to listen on for web interface and telemetry.")
 		metricsPath   = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
@@ -30,7 +34,10 @@ func main() {
 	log.Printf("Starting Docker Stats Exporter\n")
 	log.Printf("Listen address: %v\n", *listenAddress)
 
-	exporter := exporters.NewDockerStatsExporter()
+	exporter, err := exporters.NewDockerStatsExporter(ctx)
+	if err != nil {
+		panic(err)
+	}
 
 	prometheus.MustRegister(exporter)
 
