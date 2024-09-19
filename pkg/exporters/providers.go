@@ -1,6 +1,8 @@
 package exporters
 
 import (
+	"slices"
+
 	"github.com/docker/docker/api/types"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -84,7 +86,7 @@ func cpuNumberProvider(container *types.Container, stats *Statistics) prometheus
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.CPUStats.OnlineCpus),
+		slices.Max([]float64{float64(stats.CPUStats.OnlineCpus), float64(stats.PrecpuStats.OnlineCpus), float64(len(stats.CPUStats.CPUUsage.PercpuUsage))}),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
