@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # The binary to build (just the basename).
-BIN ?= openvpn_exporter
+BIN ?= docker_stats_exporter
 
 ALL_PLATFORMS ?= darwin/arm64 darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 linux/ppc64le linux/mips64le linux/s390x windows/amd64
 

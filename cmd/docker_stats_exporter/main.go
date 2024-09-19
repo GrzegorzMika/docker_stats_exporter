@@ -13,6 +13,7 @@ import (
 	"github.com/GrzegorzMika/docker_stats_exporter/pkg/exporters"
 	"github.com/GrzegorzMika/docker_stats_exporter/pkg/version"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -60,10 +61,11 @@ func main() {
 	defer func() { _ = dockerAPIClient.Close() }()
 
 	// Add the standard process and Go metrics to the custom registry.
-	// reg.MustRegister(
-	// 	collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
-	// 	collectors.NewGoCollector(),
-	// )
+	reg.MustRegister(
+		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
+		collectors.NewGoCollector(),
+	)
+
 	log.Printf("Starting HTTP server on %s...\n", *listenAddress)
 	http.Handle(*metricsPath, promhttp.HandlerFor(reg, promhttp.HandlerOpts{}))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
