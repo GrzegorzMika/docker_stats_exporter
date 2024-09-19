@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Cache dependencies
       uses: actions/cache@v3
       with:
@@ -43,7 +43,7 @@ jobs:
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Cache dependencies
       uses: actions/cache@v3
       with:
@@ -62,7 +62,7 @@ jobs:
     needs: [build, test]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     # Ensure the same binaries are used from the build job
     - name: Download binaries
       uses: actions/download-artifact@v3
