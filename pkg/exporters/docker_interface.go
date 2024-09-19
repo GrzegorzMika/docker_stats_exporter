@@ -22,7 +22,10 @@ type DockerInterface struct {
 }
 
 func NewDockerInterface(ctx context.Context, timeout time.Duration, maxGoroutines int) (*DockerInterface, error) {
-	apiClient, err := client.NewClientWithOpts(client.FromEnv)
+	apiClient, err := client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithAPIVersionNegotiation(),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Docker API client: %w", err)
 	}
