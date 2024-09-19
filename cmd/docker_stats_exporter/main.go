@@ -40,14 +40,13 @@ func main() {
 	}
 
 	log.Printf("Starting Docker Stats Exporter\n")
-	log.Printf("Listen address: %v\n", *listenAddress)
 	log.Printf("API timeout: %v\n", *timeout)
 	log.Printf("Max Goroutines: %v\n", *maxGoroutines)
 
 	log.Println("Creating registry...")
 	reg := prometheus.NewPedanticRegistry()
 	log.Println("Creating Docker stats collector...")
-	_, err := exporters.NewDockerStatsCollector(
+	dockerAPIClient, err := exporters.NewDockerStatsCollector(
 		ctx,
 		reg,
 		exporters.DockerStatsCollectorArgs{
@@ -55,8 +54,10 @@ func main() {
 			MaxGoroutines: *maxGoroutines,
 		})
 	if err != nil {
-		log.Fatalf("Error creating Docker stats collector: %v", err)
+		log.Panicf("Error creating Docker stats collector: %v", err)
 	}
+
+	defer func() { _ = dockerAPIClient.Close() }()
 
 	// Add the standard process and Go metrics to the custom registry.
 	// reg.MustRegister(

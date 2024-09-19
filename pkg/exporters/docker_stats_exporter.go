@@ -45,6 +45,12 @@ func NewDockerStatsCollector(ctx context.Context, reg prometheus.Registerer, arg
 		memoryUsageProvider,
 		memoryCachedUsageProvider,
 		memoryLimitProvider,
+		networkBytesReceivedProvider,
+		networkBytesSentProvider,
+		networkPacketsReceivedProvider,
+		networkPacketsSentProvider,
+		networkErrorsReceivedProvider,
+		networkErrorsSentProvider,
 	}
 
 	dockerStatsUpDesc := prometheus.NewDesc(

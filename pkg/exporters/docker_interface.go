@@ -38,6 +38,10 @@ func NewDockerInterface(ctx context.Context, timeout time.Duration, maxGoroutine
 	}, nil
 }
 
+func (d *DockerInterface) Close() error {
+	return d.dockerApiClient.Close()
+}
+
 func (d *DockerInterface) CollectStats() (map[*types.Container]*Statistics, error) {
 	containerList, err := d.getContainerList(d.ctx)
 	if err != nil {
