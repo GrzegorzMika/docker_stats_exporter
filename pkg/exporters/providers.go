@@ -84,7 +84,7 @@ func cpuNumberProvider(container *types.Container, stats *Statistics) prometheus
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(len(stats.CPUStats.CPUUsage.PercpuUsage)),
+		float64(stats.CPUStats.OnlineCpus),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
