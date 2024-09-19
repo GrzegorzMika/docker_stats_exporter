@@ -1,3 +1,1 @@
 # Docker Stats exporter for Prometheus
-
-sum by(image_name_without_tag) (label_replace(rate(docker_container_cpu_usage_delta_seconds{job="containers"}[1m]), "image_name_without_tag", "$1", "image_name", "^(.*)@.*$"))/sum by(image_name_without_tag) (label_replace(rate(docker_container_cpu_system_usage_delta_seconds{job="containers"}[1m]), "image_name_without_tag", "$1", "image_name", "^(.*)@.*$")) * sum by(image_name_without_tag) (label_replace(docker_container_cpu_number{job="containers"}, "image_name_without_tag", "$1", "image_name", "^(.*)@.*$"))
