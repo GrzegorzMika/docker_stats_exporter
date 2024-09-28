@@ -39,6 +39,18 @@ archives:
       - goos: windows
         format: zip
 
+checksum:
+  name_template: "{{ .ProjectName }}.sha256"
+  algorithm: sha256
+  split: true
+
+dockers:
+  - image_templates:
+      - "gregmika/docker_stats_exporter:{{ .Tag }}"
+      - "gregmika/docker_stats_exporter:v{{ .Major }}"
+      - "gregmika/docker_stats_exporter:v{{ .Major }}.{{ .Minor }}"
+      - "gregmika/docker_stats_exporter:latest"
+
 changelog:
   sort: asc
   filters:
