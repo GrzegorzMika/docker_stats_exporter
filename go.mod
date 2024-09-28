@@ -3,7 +3,7 @@ module github.com/GrzegorzMika/docker_stats_exporter
 go 1.23.1
 
 require (
-	github.com/docker/docker v27.2.1+incompatible
+	github.com/docker/docker v27.3.1+incompatible
 	github.com/prometheus/client_golang v1.20.4
 	golang.org/x/sync v0.8.0
 )
