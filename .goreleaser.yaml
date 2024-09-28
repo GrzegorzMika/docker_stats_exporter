@@ -56,6 +56,10 @@ dockers:
       - "gregmika/docker_stats_exporter:v{{ .Major }}"
       - "gregmika/docker_stats_exporter:v{{ .Major }}.{{ .Minor }}"
       - "gregmika/docker_stats_exporter:latest"
+      - "ghcr.io/GrzegorzMika/docker_stats_exporter:{{ .Tag }}"
+      - "ghcr.io/GrzegorzMika/docker_stats_exporter:v{{ .Major }}"
+      - "ghcr.io/GrzegorzMika/docker_stats_exporter:v{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/GrzegorzMika/docker_stats_exporter:latest"
 
 changelog:
   sort: asc
