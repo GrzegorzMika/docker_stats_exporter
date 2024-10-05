@@ -8,7 +8,7 @@ Prometheus exporter for Docker containers resource usage statistics. It converts
 git clone git@github.com:GrzegorzMika/docker_stats_exporter.git
 cd docker_stats_exporter
 go build .
-./docker_stats_exporter -version
+./docker_stats_exporter --version
 ```
 
 ### Pre-build binaries
