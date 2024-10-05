@@ -16,7 +16,7 @@ before:
     - go generate ./...
 
 builds:
-  - main: ./cmd/docker_stats_exporter
+  - main: .
     env:
       - CGO_ENABLED=0
     goos:

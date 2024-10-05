@@ -5,13 +5,14 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/GrzegorzMika/docker_stats_exporter/pkg/exporters"
-	"github.com/GrzegorzMika/docker_stats_exporter/pkg/version"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -22,6 +23,12 @@ const (
 	defaultMaxGoroutines = 10
 )
 
+var (
+	version = "<<< filled in by build >>>"
+	commit  = "<<< filled in by build >>>"
+	date    = "<<< filled in by build >>>"
+)
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -29,13 +36,13 @@ func main() {
 	var (
 		listenAddress = flag.String("web.listen-address", ":9273", "Address to listen on for web interface and telemetry.")
 		metricsPath   = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
-		timeout       = flag.Duration("timeout", defaultAPITimeout, "API request timeout")
-		maxGoroutines = flag.Int("max-concurrent-requests", defaultMaxGoroutines, "Maximum number of concurrent Docker API requests")
-		showVersion   = flag.Bool("version", false, "Show version information and exit")
+		timeout       = flag.Duration("web.timeout", defaultAPITimeout, "Docker Stats Exporter API request timeout.")
+		maxGoroutines = flag.Int("internal.max-concurrent-requests", defaultMaxGoroutines, "Maximum number of concurrent Docker API requests.")
+		showVersion   = flag.Bool("version", false, "Show version information and exit.")
 	)
 	flag.Parse()
 
-	log.Println(version.GetVersion())
+	log.Println(getVersion())
 	if *showVersion {
 		os.Exit(0)
 	}
@@ -82,4 +89,8 @@ func main() {
 		}
 	})
 	log.Fatal(http.ListenAndServe(*listenAddress, nil))
+}
+
+func getVersion() string {
+	return fmt.Sprintf("Version: %s, Commit SHA: %s, Build Date: %s, Go Version: %s", version, commit, date, runtime.Version())
 }
