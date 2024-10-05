@@ -49,11 +49,11 @@ and adjust the host name accordingly.
 | version                          | Show version information and exit. |
 
 ## Available metrics
- - `docker_stats_up` - Whether scraping Docker Stats metrics was successful.
- - `docker_container_read_statistics_time_seconds` - Last time read operation took place on a container
- - `docker_container_cpu_usage_seconds_total` - Total CPU usage for a container in seconds
- - `docker_container_cpu_system_usage_seconds_total` - Total system CPU usage in seconds
- - `docker_container_cpu_usage_delta_seconds` - Delta CPU usage for a container in seconds
+- `docker_stats_up` - Whether scraping Docker Stats metrics was successful.
+- `docker_container_read_statistics_time_seconds` - Last time read operation took place on a container
+- `docker_container_cpu_usage_seconds_total` - Total CPU usage for a container in seconds
+- `docker_container_cpu_system_usage_seconds_total` - Total system CPU usage in seconds
+- `docker_container_cpu_usage_delta_seconds` - Delta CPU usage for a container in seconds
 - `docker_container_cpu_system_usage_delta_seconds` - Delta system CPU usage in seconds
 - `docker_container_cpu_number` - Number of CPUs for a container
 - `docker_container_memory_usage_bytes_total` - Memory usage for a container in bytes including cache
