@@ -6,11 +6,12 @@ import (
 	"log"
 	"time"
 
+	"github.com/GrzegorzMika/docker_stats_exporter/exporters/metrics"
 	"github.com/docker/docker/api/types"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-type metricProvider func(*types.Container, *Statistics) prometheus.Metric
+type metricProvider func(*types.Container, *metrics.Statistics) prometheus.Metric
 
 type DockerStatsCollector struct {
 	DockerInterface   *DockerInterface

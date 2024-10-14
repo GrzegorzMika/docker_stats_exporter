@@ -8,6 +8,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/GrzegorzMika/docker_stats_exporter/exporters/metrics"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
@@ -42,12 +43,12 @@ func (d *DockerInterface) Close() error {
 	return d.dockerApiClient.Close()
 }
 
-func (d *DockerInterface) CollectStats() (map[*types.Container]*Statistics, error) {
+func (d *DockerInterface) CollectStats() (map[*types.Container]*metrics.Statistics, error) {
 	containerList, err := d.getContainerList(d.ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get container list: %w", err)
 	}
-	statsMap := make(map[*types.Container]*Statistics, len(containerList))
+	statsMap := make(map[*types.Container]*metrics.Statistics, len(containerList))
 
 	g, ctx := errgroup.WithContext(d.ctx)
 	g.SetLimit(d.maxGoroutines)
@@ -69,14 +70,14 @@ func (d *DockerInterface) CollectStats() (map[*types.Container]*Statistics, erro
 	return statsMap, nil
 }
 
-func (d *DockerInterface) collectContainerStats(ctx context.Context, containerID string) (*Statistics, error) {
+func (d *DockerInterface) collectContainerStats(ctx context.Context, containerID string) (*metrics.Statistics, error) {
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
 	ctx, cancel := context.WithTimeout(ctx, d.timeout)
 	defer cancel()
 
-	var statistics *Statistics
+	var statistics *metrics.Statistics
 	containerStats, err := d.dockerApiClient.ContainerStats(ctx, containerID, false)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get container stats: %w", err)
