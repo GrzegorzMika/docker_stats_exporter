@@ -59,7 +59,6 @@ func NewDockerStatsCollector(ctx context.Context, reg prometheus.Registerer, arg
 		nil,
 		nil,
 	)
-
 	collector := &DockerStatsCollector{
 		DockerInterface:   dockerInterface,
 		host:              host,

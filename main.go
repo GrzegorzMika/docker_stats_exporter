@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/GrzegorzMika/docker_stats_exporter/pkg/exporters"
+	"github.com/GrzegorzMika/docker_stats_exporter/exporters"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
