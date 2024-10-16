@@ -29,7 +29,7 @@ jobs:
         run: go mod download
   
       - name: Test
-        run: go test -v -shuffle=on ./...
+        run: go test -v -shuffle=on -race ./...
 
       - id: govulncheck
         uses: golang/govulncheck-action@v1

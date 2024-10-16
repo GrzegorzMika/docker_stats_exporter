@@ -1,13 +1,12 @@
 package exporters
 
 import (
-	"slices"
-
+	"github.com/GrzegorzMika/docker_stats_exporter/exporters/metrics"
 	"github.com/docker/docker/api/types"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func readTimeProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func readTimeProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_read_statistics_time_seconds",
@@ -16,12 +15,12 @@ func readTimeProvider(container *types.Container, stats *Statistics) prometheus.
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Read.UnixMicro())/1e6,
+		metrics.ReadTimeMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func cpuUsageTotalProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func cpuUsageTotalProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_cpu_usage_seconds_total",
@@ -30,12 +29,12 @@ func cpuUsageTotalProvider(container *types.Container, stats *Statistics) promet
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.CPUStats.CPUUsage.TotalUsage),
+		metrics.CPUUsageTotalMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func cpuSystemUsageTotalProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func cpuSystemUsageTotalProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_cpu_system_usage_seconds_total",
@@ -44,12 +43,12 @@ func cpuSystemUsageTotalProvider(container *types.Container, stats *Statistics) 
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.CPUStats.SystemCPUUsage),
+		metrics.CPUSystemUsageTotalMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func cpuUsageDeltaProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func cpuUsageDeltaProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_cpu_usage_delta_seconds",
@@ -58,12 +57,12 @@ func cpuUsageDeltaProvider(container *types.Container, stats *Statistics) promet
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.CPUStats.CPUUsage.TotalUsage)-float64(stats.PrecpuStats.CPUUsage.TotalUsage),
+		metrics.CPUUsageDeltaMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func cpuSystemUsageDeltaProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func cpuSystemUsageDeltaProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_cpu_system_usage_delta_seconds",
@@ -72,12 +71,12 @@ func cpuSystemUsageDeltaProvider(container *types.Container, stats *Statistics) 
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.CPUStats.SystemCPUUsage)-float64(stats.PrecpuStats.SystemCPUUsage),
+		metrics.CPUSystemUsageDeltaMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func cpuNumberProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func cpuNumberProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_cpu_number",
@@ -86,12 +85,12 @@ func cpuNumberProvider(container *types.Container, stats *Statistics) prometheus
 			nil,
 		),
 		prometheus.GaugeValue,
-		slices.Max([]float64{float64(stats.CPUStats.OnlineCpus), float64(stats.PrecpuStats.OnlineCpus), float64(len(stats.CPUStats.CPUUsage.PercpuUsage))}),
+		metrics.CPUNumberMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func memoryUsageProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func memoryUsageProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_memory_usage_bytes_total",
@@ -100,12 +99,12 @@ func memoryUsageProvider(container *types.Container, stats *Statistics) promethe
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.MemoryStats.Usage),
+		metrics.MemoryUsageMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func memoryCachedUsageProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func memoryCachedUsageProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_memory_cached_usage_bytes_total",
@@ -114,12 +113,12 @@ func memoryCachedUsageProvider(container *types.Container, stats *Statistics) pr
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.MemoryStats.Stats.Cache),
+		metrics.MemoryCachedUsageMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func memoryLimitProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func memoryLimitProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_memory_limit_bytes_total",
@@ -128,12 +127,12 @@ func memoryLimitProvider(container *types.Container, stats *Statistics) promethe
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.MemoryStats.Limit),
+		metrics.MemoryLimitMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkBytesReceivedProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkBytesReceivedProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_bytes_received_bytes_total",
@@ -142,12 +141,12 @@ func networkBytesReceivedProvider(container *types.Container, stats *Statistics)
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.RxBytes),
+		metrics.NetworkBytesReceivedMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkBytesSentProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkBytesSentProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_bytes_sent_bytes_total",
@@ -156,12 +155,12 @@ func networkBytesSentProvider(container *types.Container, stats *Statistics) pro
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.TxBytes),
+		metrics.NetworkBytesSentMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkPacketsReceivedProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkPacketsReceivedProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_packets_received_total",
@@ -170,12 +169,12 @@ func networkPacketsReceivedProvider(container *types.Container, stats *Statistic
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.RxPackets),
+		metrics.NetworkPacketsReceivedMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkPacketsSentProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkPacketsSentProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_packets_sent_total",
@@ -184,12 +183,12 @@ func networkPacketsSentProvider(container *types.Container, stats *Statistics) p
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.TxPackets),
+		metrics.NetworkPacketsSentMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkErrorsReceivedProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkErrorsReceivedProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_errors_received_total",
@@ -198,12 +197,12 @@ func networkErrorsReceivedProvider(container *types.Container, stats *Statistics
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.RxErrors),
+		metrics.NetworkErrorsReceivedMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
 
-func networkErrorsSentProvider(container *types.Container, stats *Statistics) prometheus.Metric {
+func networkErrorsSentProvider(container *types.Container, stats *metrics.Statistics) prometheus.Metric {
 	return prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
 			"docker_container_network_errors_sent_total",
@@ -212,7 +211,7 @@ func networkErrorsSentProvider(container *types.Container, stats *Statistics) pr
 			nil,
 		),
 		prometheus.GaugeValue,
-		float64(stats.Networks.Eth0.TxErrors),
+		metrics.NetworkErrorsSentMetric(stats),
 		container.ID, container.Names[0], container.ImageID, container.Image,
 	)
 }
