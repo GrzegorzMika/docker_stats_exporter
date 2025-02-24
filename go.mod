@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/docker/docker v27.5.1+incompatible
-	github.com/prometheus/client_golang v1.20.5
+	github.com/prometheus/client_golang v1.21.0
 	golang.org/x/sync v0.11.0
 )
 
