@@ -5,7 +5,7 @@ go 1.24.2
 require (
 	github.com/docker/docker v28.3.3+incompatible
 	github.com/prometheus/client_golang v1.22.0
-	golang.org/x/sync v0.16.0
+	golang.org/x/sync v0.17.0
 )
 
 require (
