@@ -3,7 +3,7 @@ module github.com/GrzegorzMika/docker_stats_exporter
 go 1.25.3
 
 require (
-	github.com/docker/docker v28.5.1+incompatible
+	github.com/docker/docker v28.5.2+incompatible
 	github.com/prometheus/client_golang v1.23.2
 	golang.org/x/sync v0.17.0
 )
@@ -21,7 +21,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/sys/atomicwriter v0.1.0 // indirect
 	github.com/moby/term v0.5.0 // indirect
